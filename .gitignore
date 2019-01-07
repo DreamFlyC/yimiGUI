@@ -1,0 +1,18 @@
+/target/
+/config/
+.idea
+.settings
+logs
+*.iml
+.project
+.classpath
+/src/main/resources/sqlite3.db
+/config/
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
