@@ -10,7 +10,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 
 /**
@@ -71,11 +74,13 @@ public class RunApplication {
     //正则匹配符，全匹配(包括换行符)
     private static final String REGX = "<!-- begin -->([\\s\\S]*)<!-- end -->";
 
-    //java模板文件
-    private static final String TEMPLATES = "src/main/resources/templates/";
+    //java模板文件   "src/main/resources/templates/";
+    private static String TEMPLATES = RunApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "templates/";
 
-    //jsp模板文件
-    private static final String WEB_TEMPLATES = "src/main/resources/webTemplates/";
+
+    //jsp模板文件  "src/main/resources/webTemplates/";
+    private static String WEB_TEMPLATES = RunApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "webTemplates/";
+
 
     //全局变量，用来存储模板下后台文件的集合，key --> 文件名，value --> 文件的绝对路径
     private static Map<String, String> fileMap = new HashMap<>();
@@ -84,8 +89,40 @@ public class RunApplication {
     private static Map<String, String> webFileMap = new HashMap<>();
 
 
-    public static void run(String tableName, String title, String destPath, String webPath) {
+    //加载资源文件
+    private static String setTemplates(String ext) {
+        String jar = RunApplication.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        JarFile jf = null;
+        try {
+            jf = new JarFile(jar);
+            Enumeration<JarEntry> es = jf.entries();
+            while (es.hasMoreElements()) {
+                String resname = es.nextElement().getName();
+                if (resname.lastIndexOf(ext) != -1) {
+                    URL url = RunApplication.class.getResource("/".concat(resname));
+                    return url.toString();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (jf != null) {
+                try {
+                    jf.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
 
+    public static void run(String tableName, String title, String destPath, String webPath) {
+        String path = RunApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        if (path.contains(".jar")) {
+            TEMPLATES = "ttr/templates/";
+            WEB_TEMPLATES = "ttr/webTemplates/";
+        }
         TABLE_NAME = tableName;
         TITLE = title;
         DEST_PATH = destPath;
@@ -166,7 +203,7 @@ public class RunApplication {
      * @param tableName
      * @return
      */
-    public static Map<String, String> getAnyCase(String tableName) {
+    private static Map<String, String> getAnyCase(String tableName) {
         Map<String, String> map = new HashMap<>(3);
         String aabbcc = StringUtil.upperTable(false, tableName);
         String AaBbCc = StringUtil.upperTable(true, tableName);
@@ -183,7 +220,7 @@ public class RunApplication {
      * @param path
      * @return
      */
-    public static Map<String, String> traverseFolder(String path, Map<String, String> map) {
+    private static Map<String, String> traverseFolder(String path, Map<String, String> map) {
         File file = new File(path);
         if (file.exists()) {
             File[] files = file.listFiles();
@@ -207,7 +244,7 @@ public class RunApplication {
     /**
      * 重命名文件夹
      */
-    public static boolean renameDirectory(String newName, String fileName) {
+    private static boolean renameDirectory(String newName, String fileName) {
         if (newName == null || fileName == null) {
             log.error("非法参数！");
             return false;
@@ -241,7 +278,7 @@ public class RunApplication {
      * @param fileName
      * @return
      */
-    public static void renameFile(String newName, String fileName) {
+    private static void renameFile(String newName, String fileName) {
         Map<String, String> anyCase = getAnyCase(TABLE_NAME);
         File file = new File(fileName);
         fileName = fileName.substring(0, fileName.lastIndexOf("\\"));
@@ -297,14 +334,14 @@ public class RunApplication {
      * @param fileName
      * @param filePath
      */
-    public static void editFileContent(String fileName, String filePath) {
+    private static void editFileContent(String fileName, String filePath) {
         StringBuilder sb = new StringBuilder();
 
         if (fileName.endsWith(ACTION + JAVA)) {
             sb.append("package ").append(packageName.get(0));
         } else if (fileName.endsWith(SERVICE + JAVA)) {
             sb.append("package ").append(packageName.get(1));
-        }else {
+        } else {
             sb.append("package ").append(packageName.get(1)).append(".impl");
         }
         Map<String, String> anyCase = getAnyCase(TABLE_NAME);
@@ -318,20 +355,13 @@ public class RunApplication {
     }
 
     /**
-     * 修改JSP页面的title
-     */
-    public static void editJSPTitle(String filePath, String title) {
-    }
-
-
-    /**
      * 生成JSP页面table信息
      *
      * @param filePath
      * @param tableName
      * @return
      */
-    public static void createTableInfo(String filePath, String tableName, String title) {
+    private static void createTableInfo(String filePath, String tableName, String title) {
         File src = new File(filePath);
         if (!src.exists() || src.isDirectory()) {
             log.error("文件不存在或者不是文件");
@@ -362,7 +392,7 @@ public class RunApplication {
     /**
      * 添加页面的table
      */
-    public static String createAddTableInfo(String tableName) {
+    private static String createAddTableInfo(String tableName) {
         //获取字段名
         List<String> columnNames = DBUtil.getColumnNames(tableName);
         //获取注释
@@ -390,7 +420,7 @@ public class RunApplication {
     /**
      * 修改页面的table
      */
-    public static String createEditTableInfo(String tableName) {
+    private static String createEditTableInfo(String tableName) {
         //获取字段名
         List<String> columnNames = DBUtil.getColumnNames(tableName);
         //获取注释
@@ -420,7 +450,7 @@ public class RunApplication {
     /**
      * 列表页面的table
      */
-    public static String createListTableInfo(String tableName) {
+    private static String createListTableInfo(String tableName) {
         //获取小写表名
         String aabbcc = StringUtil.upperTable(false, tableName);
         //获取字段名
