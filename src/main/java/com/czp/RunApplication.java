@@ -147,9 +147,9 @@ public class RunApplication {
         renameFileInfo(file, fileMap);
         log.info("修改文件名成功！");
 
-        webFileMap = traverseFolder(file.getAbsolutePath(), webFileMap);
+        webFileMap = traverseFolder(webFile.getAbsolutePath(), webFileMap);
         renameFileInfo(webFile, webFileMap);
-        log.info("修改文件名成功！");
+        log.info("修改WEB文件名成功！");
         String aabbcc = StringUtil.upperTable(false, TABLE_NAME);
         boolean b = renameDirectory(aabbcc, WEB_PATH + "/" + "aabbcc");
         if (b) {
