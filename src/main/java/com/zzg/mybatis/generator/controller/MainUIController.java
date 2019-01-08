@@ -295,25 +295,26 @@ public class MainUIController extends BaseFXController {
         bridge.setProgressCallback(alert);
 
         //DBUtil赋值
-        DBUtil.setUrl("jdbc:mysql://localhost:3306/"+selectedDatabaseConfig.getSchema()+"?useUnicode=true&useSSL=false&characterEncoding="+selectedDatabaseConfig.getEncoding());
+        String host = selectedDatabaseConfig.getHost();
+        String port = selectedDatabaseConfig.getPort();
+        DBUtil.setUrl("jdbc:mysql://" + host + ":+" + port + "/" + selectedDatabaseConfig.getSchema() + "?useUnicode=true&useSSL=false&characterEncoding=" + selectedDatabaseConfig.getEncoding());
         DBUtil.setUsername(selectedDatabaseConfig.getUsername());
         DBUtil.setPassword(selectedDatabaseConfig.getPassword());
 
         //生成web文件和controller文件和service文件
-        List<String> packageName=new ArrayList<>();
+        List<String> packageName = new ArrayList<>();
         String tableName = tableNameField.getText();
         String projectPath = projectFolderField.getText();
-        String destPackage=actionTargetPackage.getText().substring(0,actionTargetPackage.getText().lastIndexOf(".")).replace(".","/");
-        String destPath=projectPath.replaceAll("\\\\", "/")+"/"+actionTargetProject.getText()+"/"+destPackage;
-        String webPath=projectPath.replaceAll("\\\\", "/")+"/"+webTargetProject.getText();
-
+        String destPackage = actionTargetPackage.getText().substring(0, actionTargetPackage.getText().lastIndexOf(".")).replace(".", "/");
+        String destPath = projectPath.replaceAll("\\\\", "/") + "/" + actionTargetProject.getText() + "/" + destPackage;
+        String webPath = projectPath.replaceAll("\\\\", "/") + "/" + webTargetProject.getText();
 
 
         //TODO;找到Action.java结尾的文件添加包名
         packageName.add(actionTargetPackage.getText());
         packageName.add(serviceTargetPackage.getText());
         RunApplication.setPackageName(packageName);
-        RunApplication.run(tableName,webTargetPackage.getText(),destPath,webPath);
+        RunApplication.run(tableName, webTargetPackage.getText(), destPath, webPath);
         alert.show();
         try {
             bridge.generate();
@@ -331,7 +332,7 @@ public class MainUIController extends BaseFXController {
         if (StringUtils.isEmpty(domainObjectNameField.getText())) {
             return "类名不能为空";
         }
-        if (StringUtils.isAnyEmpty(serviceTargetPackage.getText(),actionTargetPackage.getText(),webTargetPackage.getText(), modelTargetPackage.getText(), mapperTargetPackage.getText(), daoTargetPackage.getText())) {
+        if (StringUtils.isAnyEmpty(serviceTargetPackage.getText(), actionTargetPackage.getText(), webTargetPackage.getText(), modelTargetPackage.getText(), mapperTargetPackage.getText(), daoTargetPackage.getText())) {
             return "包名不能为空";
         }
 

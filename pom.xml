@@ -89,7 +89,7 @@
                     <mainClass>com.zzg.mybatis.generator.MainUI</mainClass>
                     <vendor>Owen Zou</vendor>
                     <verbose>false</verbose>
-                    <jfxMainAppJarName>mybatis-generator-gui.jar</jfxMainAppJarName>
+                    <jfxMainAppJarName>yimi-gui.jar</jfxMainAppJarName>
                     <needShortcut>true</needShortcut>
                     <needMenu>true</needMenu>
                     <copyAdditionalAppResourcesToJar>true</copyAdditionalAppResourcesToJar>
