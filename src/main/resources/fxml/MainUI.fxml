@@ -60,14 +60,14 @@
       <items>
         <AnchorPane maxWidth="500.0" minWidth="100.0" prefHeight="618.0" prefWidth="200.0">
           <children>
-            <TreeView fx:id="leftDBTree" layoutX="-14.0" maxWidth="0.0" prefHeight="545.0" prefWidth="126.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <TreeView fx:id="leftDBTree" layoutX="-14.0" maxWidth="0.0" prefHeight="545.0" prefWidth="126.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="0.0" />
           </children>
         </AnchorPane>
         <AnchorPane minWidth="400.0">
           <children>
             <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <children>
-                <GridPane alignment="TOP_RIGHT" layoutX="5.0" layoutY="29.0" prefHeight="505.0" prefWidth="766.0" vgap="5.0" AnchorPane.leftAnchor="-5.0" AnchorPane.rightAnchor="10.0">
+                <GridPane alignment="TOP_RIGHT" layoutX="5.0" layoutY="29.0" prefHeight="582.0" prefWidth="817.0" vgap="5.0" AnchorPane.leftAnchor="-5.0" AnchorPane.rightAnchor="10.0">
                   <columnConstraints>
                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="157.0" minWidth="132.0" prefWidth="138.0" />
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="688.0" minWidth="10.0" prefWidth="222.0" />
@@ -77,20 +77,20 @@
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="688.0" minWidth="10.0" prefWidth="95.0" />
                   </columnConstraints>
                   <rowConstraints>
-                    <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="27.0" prefHeight="27.0" vgrow="SOMETIMES" />
                     <RowConstraints maxHeight="44.0" minHeight="27.0" prefHeight="27.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="44.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="44.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="27.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="44.0" minHeight="27.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="44.0" minHeight="30.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="27.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="27.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="30.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="27.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="27.0" prefHeight="27.0" vgrow="SOMETIMES" />
                     <RowConstraints maxHeight="91.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="182.0" minHeight="182.0" prefHeight="182.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="99.0" minHeight="11.0" prefHeight="43.0" />
+                    <RowConstraints maxHeight="193.0" minHeight="182.0" prefHeight="182.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="99.0" minHeight="0.0" prefHeight="81.0" />
                   </rowConstraints>
                   <children>
                     <Label text="表名" />
@@ -110,7 +110,7 @@
                             <Insets right="5.0" />
                           </HBox.margin>
                         </TextField>
-                        <Button mnemonicParsing="false" onAction="#openTableColumnCustomizationPage" text="定制列">
+                        <Button mnemonicParsing="false" onAction="#openTableColumnCustomizationPage" prefHeight="32.0" prefWidth="74.0" text="定制列">
                           <styleClass>
                             <String fx:value="btn" />
                             <String fx:value="btn-default" />
@@ -121,21 +121,13 @@
                         <Insets left="5.0" />
                       </GridPane.margin>
                     </HBox>
-                    <Label prefHeight="29.0" prefWidth="57.0" text="主键(选填)" GridPane.rowIndex="2" />
                     <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                      <children>
-                        <TextField fx:id="generateKeysField" prefHeight="30.0" prefWidth="216.0" promptText="primary key, such as id" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                          <GridPane.margin>
-                            <Insets left="5.0" right="5.0" />
-                          </GridPane.margin>
-                          <HBox.margin>
-                            <Insets top="5.0" />
-                          </HBox.margin>
-                        </TextField>
-                      </children>
                       <GridPane.margin>
                         <Insets left="5.0" />
                       </GridPane.margin>
+                                 <children>
+                        <TextField fx:id="generateKeysField" prefHeight="29.0" prefWidth="399.0" promptText="primary key, such as id" />
+                                 </children>
                     </HBox>
                     <Label text="项目所在目录" GridPane.rowIndex="3" />
                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="3">
@@ -251,34 +243,34 @@
                             <CheckBox fx:id="useExample" mnemonicParsing="false" selected="true" text="使用Example" />
                           </children>
                         </HBox>
+                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                            <children>
+                              <Button mnemonicParsing="false" onAction="#generateCode" prefHeight="33.0" prefWidth="88.0" text="代码生成">
+                                <styleClass>
+                                  <String fx:value="btn-success" />
+                                  <String fx:value="btn" />
+                                </styleClass>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#saveGeneratorConfig" text="保存配置">
+                                <styleClass>
+                                  <String fx:value="btn" />
+                                  <String fx:value="btn-default" />
+                                </styleClass>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#openTargetFolder" text="打开生成文件夹">
+                                <styleClass>
+                                  <String fx:value="btn" />
+                                  <String fx:value="btn-default" />
+                                </styleClass>
+                              </Button>
+                            </children>
+                          </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" />
                       </children>
                       <padding>
                         <Insets left="5.0" />
                       </padding>
                     </VBox>
-                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="13">
-                      <children>
-                        <Button mnemonicParsing="false" onAction="#generateCode" text="代码生成">
-                          <styleClass>
-                            <String fx:value="btn-success" />
-                            <String fx:value="btn" />
-                          </styleClass>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#saveGeneratorConfig" text="保存配置">
-                          <styleClass>
-                            <String fx:value="btn" />
-                            <String fx:value="btn-default" />
-                          </styleClass>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#openTargetFolder" text="打开生成文件夹">
-                          <styleClass>
-                            <String fx:value="btn" />
-                            <String fx:value="btn-default" />
-                          </styleClass>
-                        </Button>
-                      </children>
-                    </HBox>
                     <Label text="自定义接口名称(选填)" GridPane.rowIndex="8">
                       <padding>
                         <Insets left="5.0" />
@@ -305,12 +297,12 @@
                       </GridPane.margin>
                     </TextField>
                     <Label text="Action包名" GridPane.rowIndex="4" />
-                    <TextField fx:id="actionTargetPackage" prefHeight="100.0" prefWidth="200.0" promptText="com.example" text="com.example.action" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <TextField fx:id="actionTargetPackage" prefHeight="36.0" prefWidth="214.0" promptText="com.example" text="com.example.action" GridPane.columnIndex="1" GridPane.rowIndex="4">
                       <HBox.margin>
                         <Insets right="5.0" />
                       </HBox.margin>
                       <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets left="5.0" right="5.0" />
                       </GridPane.margin>
                     </TextField>
                     <Label text="存放目录" GridPane.columnIndex="2" GridPane.rowIndex="4" />
@@ -320,12 +312,12 @@
                       </GridPane.margin>
                     </TextField>
                     <Label text="Service包名" GridPane.rowIndex="5" />
-                    <TextField fx:id="serviceTargetPackage" prefHeight="100.0" prefWidth="200.0" promptText="com.example" text="com.example.service" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <TextField fx:id="serviceTargetPackage" prefHeight="85.0" prefWidth="200.0" promptText="com.example" text="com.example.service" GridPane.columnIndex="1" GridPane.rowIndex="5">
                       <HBox.margin>
                         <Insets right="5.0" />
                       </HBox.margin>
                       <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets left="5.0" right="5.0" />
                       </GridPane.margin>
                     </TextField>
                     <Label text="存放目录" GridPane.columnIndex="2" GridPane.rowIndex="5" />
@@ -334,6 +326,7 @@
                         <Insets left="5.0" />
                       </GridPane.margin>
                     </TextField>
+                    <Label text="主键(选填)" GridPane.rowIndex="2" />
 
                   </children>
                 </GridPane>
