@@ -55,7 +55,7 @@
         </div>
         <div id="panelInfo" class="panel-collapse collapse in">
             <div class="panel-body">
-                <table>
+                <table class="table table-bordered">
 				<!-- begin -->here<!-- end -->
                 </table>
                 <div class="col-md-12 text-center">

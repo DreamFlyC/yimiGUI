@@ -130,6 +130,7 @@ public class RunApplication {
 
         File file = new File(DEST_PATH);
         File webFile = new File(WEB_PATH);
+
         try {
             FileUtils.copyDirectory(new File(TEMPLATES), file);
         } catch (IOException e) {
@@ -144,20 +145,32 @@ public class RunApplication {
         log.info("创建WEB文件目录成功！");
 
         fileMap = traverseFolder(file.getAbsolutePath(), fileMap);
-        renameFileInfo(file, fileMap);
-        log.info("修改文件名成功！");
-
+        boolean b2 = renameFileInfo(fileMap);
+        if(b2){
+            log.info("修改文件名成功！");
+        }else {
+            log.info("修改文件失败！");
+        }
         webFileMap = traverseFolder(webFile.getAbsolutePath(), webFileMap);
-        renameFileInfo(webFile, webFileMap);
-        log.info("修改WEB文件名成功！");
+        boolean b3 = renameFileInfo(webFileMap);
+        if(b3){
+            log.info("修改WEB文件名成功！");
+        }else {
+            log.info("修改WEB文件名失败！");
+        }
         String aabbcc = StringUtil.upperTable(false, TABLE_NAME);
         boolean b = renameDirectory(aabbcc, WEB_PATH + "/" + "aabbcc");
         if (b) {
-            log.info("修改文件夹名成功！");
+            log.info("修改WEB文件夹名成功！");
         } else {
-            log.error("修改文件夹名失败！");
+            log.error("修改WEB文件夹名失败！");
         }
-
+        boolean b1 = renameTitle(title);
+        if (b1) {
+            log.info("修改WEB文件标题成功！");
+        } else {
+            log.info("修改WEB文件标题成功！");
+        }
         editFileInfo(file, fileMap);
         log.info("修改后台文件内容成功！");
         editFileInfo(webFile, webFileMap);
@@ -167,6 +180,12 @@ public class RunApplication {
 
     }
 
+    /**
+     * 修改文件内容
+     *
+     * @param file
+     * @param fileMap
+     */
     private static void editFileInfo(File file, Map<String, String> fileMap) {
         if (fileMap.isEmpty()) {
             Map<String, String> newFileMap = traverseFolder(file.getAbsolutePath(), fileMap);
@@ -175,7 +194,7 @@ public class RunApplication {
                     if (vo.getKey().endsWith(JAVA)) {
                         editFileContent(vo.getKey(), vo.getValue());
                     } else if (vo.getKey().endsWith(JSP)) {
-                        createTableInfo(vo.getValue(), TABLE_NAME, TITLE);
+                        createTableInfo(vo.getValue(), TABLE_NAME);
                     }
                 }
 
@@ -186,15 +205,24 @@ public class RunApplication {
         }
     }
 
-    private static void renameFileInfo(File file, Map<String, String> map) {
+    /**
+     * 修改文件名
+     *
+     * @param map
+     */
+    private static boolean renameFileInfo(Map<String, String> map) {
+        boolean b=false;
         if (!(Objects.requireNonNull(map)).isEmpty()) {
             for (Map.Entry<String, String> vo : map.entrySet()) {
                 String key = vo.getKey();
                 String value = vo.getValue();
-                renameFile(key, value);
+                 if(renameFile(key, value)){
+                     b=true;
+                 }
             }
             map.clear();
         }
+        return b;
     }
 
     /**
@@ -256,9 +284,12 @@ public class RunApplication {
                 if (path.endsWith("\\")) {
                     path = path.substring(0, path.length() - 1);
                 } else {
+
                     String filePath = path.substring(0, path.lastIndexOf("\\") + 1);
-                    boolean b = file.renameTo(new File(filePath + newName));
-                    return b;
+                    File newFile = new File(filePath + newName);
+                    if (checkFileExist(newFile)) {
+                        return file.renameTo(newFile);
+                    }
                 }
 
 
@@ -270,6 +301,24 @@ public class RunApplication {
         return false;
     }
 
+    /**
+     * 重命名之前检查文件是否存在
+     *
+     * @param file
+     * @return
+     */
+    private static boolean checkFileExist(File file) {
+        if (file.exists()) {
+            if (file.delete()) {
+                log.info("删除源文件成功");
+                return true;
+            }
+        } else {
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * 重命名文件名
@@ -278,36 +327,46 @@ public class RunApplication {
      * @param fileName
      * @return
      */
-    private static void renameFile(String newName, String fileName) {
+    private static boolean renameFile(String newName, String fileName) {
         Map<String, String> anyCase = getAnyCase(TABLE_NAME);
         File file = new File(fileName);
         fileName = fileName.substring(0, fileName.lastIndexOf("\\"));
         StringBuilder webFilePath = new StringBuilder(fileName).append("\\");
         if (newName.endsWith(ACTION + JAVA)) {
-            boolean b = file.renameTo(new File(fileName + "\\" + anyCase.get("AaBbCc") + ACTION + JAVA));
-            return;
+            File newFile = new File(fileName + "\\" + anyCase.get("AaBbCc") + ACTION + JAVA);
+            if (checkFileExist(newFile)) {
+                return file.renameTo(newFile);
+            }
+            return false;
         }
         if (newName.endsWith(SERVICE + JAVA)) {
-            boolean b = file.renameTo(new File(fileName + "\\" + PREFIX + anyCase.get("AaBbCc") + SERVICE + JAVA));
-            return;
+            File newFile = new File(fileName + "\\" + PREFIX + anyCase.get("AaBbCc") + SERVICE + JAVA);
+            if (checkFileExist(newFile)) {
+                return file.renameTo(newFile);
+            }
+            return false;
         }
         if (newName.endsWith(SERVICE + IMPL + JAVA)) {
-            boolean b = file.renameTo(new File(fileName + "\\" + PREFIX + anyCase.get("AaBbCc") + SERVICE + IMPL + JAVA));
-            return;
+            File newFile = new File(fileName + "\\" + PREFIX + anyCase.get("AaBbCc") + SERVICE + IMPL + JAVA);
+            if (checkFileExist(newFile)) {
+                return file.renameTo(newFile);
+            }
+            return false;
         }
         String aabbcc = anyCase.get("aabbcc");
         Boolean b1 = getBoolean(newName, file, webFilePath, ADD, aabbcc);
         if (b1 != null) {
-            return;
+            return b1;
         }
         Boolean b2 = getBoolean(newName, file, webFilePath, DETAIL, aabbcc);
         if (b2 != null) {
-            return;
+            return b2;
         }
         Boolean b3 = getBoolean(newName, file, webFilePath, LIST, aabbcc);
         if (b3 != null) {
+            return b3;
         }
-
+        return false;
     }
 
     /**
@@ -319,11 +378,14 @@ public class RunApplication {
      * @param add
      * @return
      */
-    private static Boolean getBoolean(String newName, File file, StringBuilder webFilePath, String add, String aabbcc) {
+    private static Boolean getBoolean(String newName, File file, StringBuilder webFilePath, String add, String
+            aabbcc) {
         if (newName.endsWith(add + JSP)) {
             String path = webFilePath.append(aabbcc).append(add).append(JSP).toString();
-            boolean b = file.renameTo(new File(path));
-            return b;
+            File newFile = new File(path);
+            if (checkFileExist(newFile)) {
+                return file.renameTo(newFile);
+            }
         }
         return null;
     }
@@ -338,20 +400,20 @@ public class RunApplication {
         StringBuilder sb = new StringBuilder();
 
         if (fileName.endsWith(ACTION + JAVA)) {
-            sb.append("package ").append(packageName.get(0));
+            sb.append("package ").append(packageName.get(0)).append(";");
         } else if (fileName.endsWith(SERVICE + JAVA)) {
-            sb.append("package ").append(packageName.get(1));
+            sb.append("package ").append(packageName.get(1)).append(";");
         } else {
-            sb.append("package ").append(packageName.get(1)).append(".impl");
+            sb.append("package ").append(packageName.get(1)).append(".impl").append(";");
         }
         Map<String, String> anyCase = getAnyCase(TABLE_NAME);
         File src = new File(filePath);
-        String cont = FileUtil.read(src.getAbsolutePath());
+        String cont = FileUtil.read(src, "UTF-8");
         cont = cont.replaceAll("aabbcc", anyCase.get("aabbcc"))
                 .replaceAll("AaBbCc", anyCase.get("AaBbCc"))
                 .replaceAll("aaBbCc", anyCase.get("aaBbCc"));
         sb.append(cont);
-        FileUtil.write(sb.toString(), src);
+        FileUtil.write(src, sb.toString(), "UTF-8");
     }
 
     /**
@@ -361,28 +423,27 @@ public class RunApplication {
      * @param tableName
      * @return
      */
-    private static void createTableInfo(String filePath, String tableName, String title) {
+    private static void createTableInfo(String filePath, String tableName) {
         File src = new File(filePath);
         if (!src.exists() || src.isDirectory()) {
             log.error("文件不存在或者不是文件");
         } else {
             //读取文件内容
-            String read = FileUtil.read(src.getAbsolutePath());
-            read = read.replaceAll("TITLE", title);
+            String read = FileUtil.read(src, "UTF-8");
             String oldTableInfo = RegexUtil.getSubUtilSimple(read, REGX);
             if (filePath.endsWith(ADD + JSP)) {
                 //获取模板table之间的内容
                 String newTableInfo = createAddTableInfo(tableName);
                 String tableInfo = read.replace(oldTableInfo, newTableInfo);
-                FileUtil.write(tableInfo, src);
+                FileUtil.write(src, tableInfo, "UTF-8");
             } else if (filePath.endsWith(DETAIL + JSP)) {
                 String newTableInfo = createEditTableInfo(tableName);
                 String tableInfo = read.replace(oldTableInfo, newTableInfo);
-                FileUtil.write(tableInfo, src);
+                FileUtil.write(src, tableInfo, "UTF-8");
             } else if (filePath.endsWith((LIST + JSP))) {
                 String newTableInfo = createListTableInfo(tableName);
                 String tableInfo = read.replace(oldTableInfo, newTableInfo);
-                FileUtil.write(tableInfo, src);
+                FileUtil.write(src, tableInfo, "UTF-8");
             } else {
                 log.error("生成的文件有误，请重新生成！");
             }
@@ -471,7 +532,7 @@ public class RunApplication {
 
             thead.append("<th>").append(formatColumnComments.get(i)).append("</th>\n");
 
-            tbody.append("<td>${item").append(name).append("}</td>\n");
+            tbody.append("<td>${item.").append(name).append("}</td>\n");
 
         }
         thead.append("<th>操作</th>\n")
@@ -486,6 +547,28 @@ public class RunApplication {
         table.append(thead);
         table.append(tbody);
         return table.toString();
+    }
+
+
+    /**
+     * 对jsp页面的标题重命名
+     *
+     * @return
+     */
+    private static boolean renameTitle(String title) {
+        File webFile = new File(WEB_PATH);
+        Map<String, String> map = new LinkedHashMap<>();
+        map = traverseFolder(webFile.getAbsolutePath(), map);
+        if (!(Objects.requireNonNull(map)).isEmpty()) {
+            for (Map.Entry<String, String> vo : map.entrySet()) {
+                String read = FileUtil.read(new File(vo.getValue()), "UTF-8");
+                read = read.replace("TITLE", title);
+                FileUtil.write(new File(vo.getValue()), read, "UTF-8");
+                return true;
+            }
+        }
+        return false;
+
     }
 }
 

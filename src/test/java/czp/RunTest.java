@@ -1,6 +1,10 @@
 package czp;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
+
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @ author     ：CZP.
@@ -11,35 +15,16 @@ import java.io.File;
  */
 public class RunTest {
 
-    //java模板文件
-    private static final String TEMPLATES = "/src/main/resources/templates/";
 
-    //jsp模板文件
-    private static final String WEB_TEMPLATES = "src/main/resources/webTemplates/";
-
-    public static void main(String[] args) {
+    @Test
+    public void  read() {
+        File file=new File("D:\\abc\\aabbcc_list.jsp");
+        String encoding="UTF-8";
         try {
-            String path = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-            File af = new File(path + "/webTemplates");
-            System.out.println(af.getPath());
-            if (!af.exists()){
-                System.out.println("nullEXIST");
-            }
-            String[] files = af.list();
-            if (files.length == 0){
-                System.out.println("nullLENGTH");
-            }
-            for (String file : files) {
-                if (file != null){
-                    System.out.println(file);
-                }
-                else {
-                    System.out.println("null");
-                }
-            }
-
-        } catch (Exception e) {
-            System.out.println("HugeERROR");
+            String data = FileUtils.readFileToString(file, encoding);
+            System.out.println(data);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

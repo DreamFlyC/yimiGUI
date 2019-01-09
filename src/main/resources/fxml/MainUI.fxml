@@ -146,7 +146,7 @@
                       </children>
                     </HBox>
                     <Label text="实体类名包名" GridPane.rowIndex="6" />
-                    <TextField fx:id="modelTargetPackage" prefHeight="27.0" prefWidth="152.0" promptText="com.example.model" text="com.example.entity" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                    <TextField fx:id="modelTargetPackage" prefHeight="27.0" prefWidth="152.0" promptText="com.lw.entity" text="com.lw.entity" GridPane.columnIndex="1" GridPane.rowIndex="6">
                       <HBox.margin>
                         <Insets right="5.0" />
                       </HBox.margin>
@@ -161,7 +161,7 @@
                       </GridPane.margin>
                     </TextField>
                     <Label text="Mapper接口包名" GridPane.rowIndex="7" />
-                    <TextField fx:id="daoTargetPackage" prefHeight="27.0" prefWidth="248.0" promptText="com.example.mapper" text="com.example.mapper" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                    <TextField fx:id="daoTargetPackage" prefHeight="27.0" prefWidth="248.0" promptText="com.lw.persistence" text="com.lw.persistence" GridPane.columnIndex="1" GridPane.rowIndex="7">
                       <HBox.margin>
                         <Insets right="5.0" />
                       </HBox.margin>
@@ -176,7 +176,7 @@
                       </GridPane.margin>
                     </TextField>
                     <Label prefHeight="27.0" prefWidth="99.0" text="映射XML文件包名" GridPane.rowIndex="9" />
-                    <TextField fx:id="mapperTargetPackage" prefHeight="27.0" prefWidth="248.0" promptText="com.example" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                    <TextField fx:id="mapperTargetPackage" prefHeight="27.0" prefWidth="248.0" promptText="com.lw.persistence" text="com.lw.persistence" GridPane.columnIndex="1" GridPane.rowIndex="9">
                       <HBox.margin>
                         <Insets right="5.0" />
                       </HBox.margin>
@@ -212,26 +212,26 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="8">
                           <children>
-                            <CheckBox fx:id="offsetLimitCheckBox" minWidth="100.0" mnemonicParsing="false" selected="true" text="分页" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                            <CheckBox fx:id="commentCheckBox" mnemonicParsing="false" selected="true" text="生成实体域注释(来自表注释)" />
-                            <CheckBox fx:id="overrideXML" mnemonicParsing="false" selected="true" text="覆盖原XML" />
+                            <CheckBox fx:id="offsetLimitCheckBox" minWidth="100.0" mnemonicParsing="false"  text="分页" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                            <CheckBox fx:id="commentCheckBox" mnemonicParsing="false" selected="true"  text="生成实体域注释(来自表注释)" />
+                            <CheckBox fx:id="overrideXML" mnemonicParsing="false"  text="覆盖原XML" />
                           </children>
                         </HBox>
                         <HBox>
                           <children>
-                            <CheckBox fx:id="needToStringHashcodeEquals" mnemonicParsing="false" selected="true" text="生成toString/hashCode/equals方法" />
-                            <CheckBox fx:id="useSchemaPrefix" mnemonicParsing="false" selected="true" text="使用Schema前缀" />
+                            <CheckBox fx:id="needToStringHashcodeEquals" mnemonicParsing="false"  text="生成toString/hashCode/equals方法" />
+                            <CheckBox fx:id="useSchemaPrefix" mnemonicParsing="false"  text="使用Schema前缀" />
                           </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="18.0">
                           <children>
-                            <CheckBox fx:id="forUpdateCheckBox" mnemonicParsing="false" selected="false" text="select 增加ForUpdate" />
-                            <CheckBox fx:id="annotationDAOCheckBox" mnemonicParsing="false" selected="true" text="DAO使用 @Repository 注解" />
+                            <CheckBox fx:id="forUpdateCheckBox" mnemonicParsing="false"  text="select 增加ForUpdate" />
+                            <CheckBox fx:id="annotationDAOCheckBox" mnemonicParsing="false"  text="DAO使用 @Repository 注解" />
                           </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                           <children>
-                            <CheckBox fx:id="useDAOExtendStyle" mnemonicParsing="false" selected="true" text="DAO方法抽出到公共父接口" />
+                            <CheckBox fx:id="useDAOExtendStyle" mnemonicParsing="false"  text="DAO方法抽出到公共父接口" />
                             <CheckBox fx:id="jsr310Support" mnemonicParsing="false" prefHeight="16.0" prefWidth="252.0" text="JSR310: Date and Time API" />
                           </children>
                         </HBox>
@@ -240,7 +240,7 @@
                             <CheckBox fx:id="annotationCheckBox" mnemonicParsing="false" selected="false" text="生成JPA注解" />
                             <CheckBox fx:id="useActualColumnNamesCheckbox" mnemonicParsing="false" selected="false" text="使用实际的列名" />
                             <CheckBox fx:id="useTableNameAliasCheckbox" mnemonicParsing="false" selected="false" text="启用as别名查询" />
-                            <CheckBox fx:id="useExample" mnemonicParsing="false" selected="true" text="使用Example" />
+                            <CheckBox fx:id="useExample" mnemonicParsing="false"  text="使用Example" />
                           </children>
                         </HBox>
                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
@@ -297,7 +297,7 @@
                       </GridPane.margin>
                     </TextField>
                     <Label text="Action包名" GridPane.rowIndex="4" />
-                    <TextField fx:id="actionTargetPackage" prefHeight="36.0" prefWidth="214.0" promptText="com.example" text="com.example.action" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <TextField fx:id="actionTargetPackage" prefHeight="36.0" prefWidth="214.0" promptText="com.lw" text="com.lw.action" GridPane.columnIndex="1" GridPane.rowIndex="4">
                       <HBox.margin>
                         <Insets right="5.0" />
                       </HBox.margin>
@@ -312,7 +312,7 @@
                       </GridPane.margin>
                     </TextField>
                     <Label text="Service包名" GridPane.rowIndex="5" />
-                    <TextField fx:id="serviceTargetPackage" prefHeight="85.0" prefWidth="200.0" promptText="com.example" text="com.example.service" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <TextField fx:id="serviceTargetPackage" prefHeight="85.0" prefWidth="200.0" promptText="com.lw" text="com.lw.service" GridPane.columnIndex="1" GridPane.rowIndex="5">
                       <HBox.margin>
                         <Insets right="5.0" />
                       </HBox.margin>

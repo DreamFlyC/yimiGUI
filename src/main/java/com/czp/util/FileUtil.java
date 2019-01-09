@@ -15,7 +15,7 @@ import java.io.*;
  */
 public class FileUtil {
 
-    private static final Logger log= LoggerFactory.getLogger(FileUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(FileUtil.class);
 
     /**
      * 复制一个文件到另一个文件
@@ -53,6 +53,16 @@ public class FileUtil {
         return res.toString();
     }
 
+    public static String read(File file, String encoding) {
+        try {
+            return FileUtils.readFileToString(file, encoding);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     public static void write(String cont, File dist) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(dist));
@@ -62,6 +72,23 @@ public class FileUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void write(File file, String data, String encoding) {
+        write(file, data, encoding, false);
+    }
+
+    public static void write(File file, String data, String encoding, boolean append) {
+        try {
+            FileUtils.writeStringToFile(file, data, encoding, append);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        String read = read(new File("D:\\abc\\aabbcc_list.jsp"), "UTF-8");
+        System.out.println(read);
     }
 
 }

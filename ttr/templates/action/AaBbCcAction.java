@@ -36,14 +36,12 @@ public class AaBbCcAction extends BaseAction {
         return "/WEB-INF/aabbcc/aabbcc_add";
     }
 
-    //增加
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     public String addAaBbCc(AaBbCc aabbcc) {
         aaBbCcService.save(aabbcc);
         return "redirect:/manage/aabbcc";
     }
 
-    //删除
     @RequestMapping(value = "/del/{id}")
     public String deleteAaBbCc(@PathVariable("id") int id) {
         aaBbCcService.del(id);
