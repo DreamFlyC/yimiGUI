@@ -36,10 +36,8 @@ import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.sql.SQLRecoverableException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
 public class MainUIController extends BaseFXController {
 
@@ -302,17 +300,22 @@ public class MainUIController extends BaseFXController {
         DBUtil.setPassword(selectedDatabaseConfig.getPassword());
 
         //生成web文件和controller文件和service文件
-        List<String> packageName = new ArrayList<>();
+        Map<String, String> packageName = new HashMap<>(4);
         String tableName = tableNameField.getText();
         String projectPath = projectFolderField.getText();
         String destPackage = actionTargetPackage.getText().substring(0, actionTargetPackage.getText().lastIndexOf(".")).replace(".", "/");
         String destPath = projectPath.replaceAll("\\\\", "/") + "/" + actionTargetProject.getText() + "/" + destPackage;
         String webPath = projectPath.replaceAll("\\\\", "/") + "/" + webTargetProject.getText();
 
+        //
 
         //TODO;找到Action.java结尾的文件添加包名
-        packageName.add(actionTargetPackage.getText());
-        packageName.add(serviceTargetPackage.getText());
+
+        packageName.put("action",actionTargetPackage.getText());
+        packageName.put("service",serviceTargetPackage.getText());
+        packageName.put("entity",modelTargetPackage.getText());
+        packageName.put("domain",domainObjectNameField.getText());
+
         RunApplication.setPackageName(packageName);
         RunApplication.run(tableName, webTargetPackage.getText(), destPath, webPath);
         alert.show();
@@ -335,7 +338,7 @@ public class MainUIController extends BaseFXController {
         if (StringUtils.isAnyEmpty(serviceTargetPackage.getText(), actionTargetPackage.getText(), modelTargetPackage.getText(), mapperTargetPackage.getText(), daoTargetPackage.getText())) {
             return "包名不能为空";
         }
-        if(StringUtils.isEmpty(webTargetPackage.getText())){
+        if (StringUtils.isEmpty(webTargetPackage.getText())) {
             return "web标题不能为空";
         }
 

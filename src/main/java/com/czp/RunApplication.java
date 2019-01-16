@@ -61,9 +61,9 @@ public class RunApplication {
 
     private static final String JAVA = ".java";
 
-    private static List<String> packageName = new ArrayList<>();
+    private static Map<String,String> packageName=new HashMap<>(4);
 
-    public static void setPackageName(List<String> packageName) {
+    public static void setPackageName(Map<String,String> packageName) {
         RunApplication.packageName = packageName;
     }
 
@@ -397,11 +397,20 @@ public class RunApplication {
         StringBuilder sb = new StringBuilder();
 
         if (fileName.endsWith(ACTION + JAVA)) {
-            sb.append("package ").append(packageName.get(0)).append(";");
+            sb.append("package ").append(packageName.get("action")).append(";\n\n");
+            sb.append("import ").append(packageName.get("entity")).append(".").append(packageName.get("domain")).append(";\n");
+            sb.append("import ").append(packageName.get("service")).append(".").append(PREFIX).append(packageName.get("domain")).append(SERVICE).append(";\n");
+            sb.append("import ").append("lw.common.page.Pager").append(";\n");
+            sb.append("import ").append("lw.core.base.action.BaseAction").append(";\n");
         } else if (fileName.endsWith(SERVICE + JAVA)) {
             sb.append("package ").append(packageName.get(1)).append(";");
-        } else {
+            sb.append("import ").append(packageName.get("entity")).append(".").append(packageName.get("domain")).append(";\n");
+            sb.append("import ").append("lw.core.base.service.BaseService").append(";\n");
+        } else if(fileName.endsWith(IMPL+JAVA)){
             sb.append("package ").append(packageName.get(1)).append(".impl").append(";");
+            sb.append("import ").append(packageName.get("entity")).append(".").append(packageName.get("domain")).append(";\n");
+            sb.append("import ").append(packageName.get("service")).append(".").append(PREFIX).append(packageName.get("domain")).append(SERVICE).append(";\n");
+            sb.append("import ").append("lw.core.base.service.impl.BaseServiceImpl").append(";\n");
         }
         Map<String, String> anyCase = getAnyCase(TABLE_NAME);
         File src = new File(filePath);
