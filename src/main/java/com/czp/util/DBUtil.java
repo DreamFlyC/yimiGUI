@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @ author     ：CZP.
@@ -219,6 +221,39 @@ public class DBUtil {
         return columnComments;
     }
 
+    /**
+     * 获取主键
+     *
+     * @param tableName
+     * @return
+     */
+    public static String[] getPrimaryKeys(String tableName) {
+        Connection conn = getConnection();
+        String sql = "SHOW CREATE TABLE " + tableName;
+        try {
+
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+
+                //正则匹配数据
+                Pattern pattern = Pattern.compile("PRIMARY KEY \\(\\`(.*)\\`\\)");
+                Matcher matcher = pattern.matcher(rs.getString(2));
+                matcher.find();
+                String data = matcher.group();
+                //过滤对于字符
+                data = data.replaceAll("\\`|PRIMARY KEY \\(|\\)", "");
+                //拆分字符
+                String[] stringArr = data.split(",");
+
+                return stringArr;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * 获取表中字段的所有注释,没有注释时用列名替代

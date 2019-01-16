@@ -332,8 +332,11 @@ public class MainUIController extends BaseFXController {
         if (StringUtils.isEmpty(domainObjectNameField.getText())) {
             return "类名不能为空";
         }
-        if (StringUtils.isAnyEmpty(serviceTargetPackage.getText(), actionTargetPackage.getText(), webTargetPackage.getText(), modelTargetPackage.getText(), mapperTargetPackage.getText(), daoTargetPackage.getText())) {
+        if (StringUtils.isAnyEmpty(serviceTargetPackage.getText(), actionTargetPackage.getText(), modelTargetPackage.getText(), mapperTargetPackage.getText(), daoTargetPackage.getText())) {
             return "包名不能为空";
+        }
+        if(StringUtils.isEmpty(webTargetPackage.getText())){
+            return "web标题不能为空";
         }
 
         return null;

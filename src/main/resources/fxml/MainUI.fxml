@@ -126,7 +126,7 @@
                         <Insets left="5.0" />
                       </GridPane.margin>
                                  <children>
-                        <TextField fx:id="generateKeysField" prefHeight="29.0" prefWidth="399.0" promptText="primary key, such as id" />
+                        <TextField fx:id="generateKeysField" prefHeight="29.0" prefWidth="399.0" promptText="primary key, such as id" text="id" />
                                  </children>
                     </HBox>
                     <Label text="项目所在目录" GridPane.rowIndex="3" />

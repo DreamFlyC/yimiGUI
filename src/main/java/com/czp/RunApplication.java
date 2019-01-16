@@ -453,8 +453,19 @@ public class RunApplication {
     private static String createAddTableInfo(String tableName) {
         //获取字段名
         List<String> columnNames = DBUtil.getColumnNames(tableName);
+
         //获取注释
         List<String> formatColumnComments = DBUtil.getFormatColumnComments(tableName);
+
+        String[] primaryKeys = DBUtil.getPrimaryKeys(tableName);
+
+        if (primaryKeys != null && primaryKeys.length > 0) {
+            for (String primaryKey : primaryKeys) {
+                int id = columnNames.indexOf(primaryKey);
+                formatColumnComments.remove(id);
+                columnNames.remove(primaryKey);
+            }
+        }
 
         StringBuilder table = new StringBuilder();
         for (int i = 0; i < columnNames.size(); i++) {
@@ -481,8 +492,19 @@ public class RunApplication {
     private static String createEditTableInfo(String tableName) {
         //获取字段名
         List<String> columnNames = DBUtil.getColumnNames(tableName);
+
         //获取注释
         List<String> formatColumnComments = DBUtil.getFormatColumnComments(tableName);
+
+        String[] primaryKeys = DBUtil.getPrimaryKeys(tableName);
+
+        if (primaryKeys != null && primaryKeys.length > 0) {
+            for (String primaryKey : primaryKeys) {
+                int id = columnNames.indexOf(primaryKey);
+                formatColumnComments.remove(id);
+                columnNames.remove(primaryKey);
+            }
+        }
 
         String aaBbCc = StringUtil.firstLower(StringUtil.upperTable(true, tableName));
         StringBuilder table = new StringBuilder();
