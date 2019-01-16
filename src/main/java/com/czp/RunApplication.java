@@ -63,10 +63,6 @@ public class RunApplication {
 
     private static List<String> packageName = new ArrayList<>();
 
-    public static List<String> getPackageName() {
-        return packageName;
-    }
-
     public static void setPackageName(List<String> packageName) {
         RunApplication.packageName = packageName;
     }
@@ -146,26 +142,27 @@ public class RunApplication {
 
         fileMap = traverseFolder(file.getAbsolutePath(), fileMap);
         boolean b2 = renameFileInfo(fileMap);
-        if(b2){
+        if (b2) {
             log.info("修改文件名成功！");
-        }else {
+        } else {
             log.info("修改文件失败！");
         }
         webFileMap = traverseFolder(webFile.getAbsolutePath(), webFileMap);
         boolean b3 = renameFileInfo(webFileMap);
-        if(b3){
+        if (b3) {
             log.info("修改WEB文件名成功！");
-        }else {
+        } else {
             log.info("修改WEB文件名失败！");
         }
         String aabbcc = StringUtil.upperTable(false, TABLE_NAME);
+        String aaBbCc = StringUtil.firstLower(StringUtil.upperTable(true, TABLE_NAME));
         boolean b = renameDirectory(aabbcc, WEB_PATH + "/" + "aabbcc");
         if (b) {
             log.info("修改WEB文件夹名成功！");
         } else {
             log.error("修改WEB文件夹名失败！");
         }
-        boolean b1 = renameTitle(title);
+        boolean b1 = renameTitleAndAbc(title, aabbcc, aaBbCc);
         if (b1) {
             log.info("修改WEB文件标题成功！");
         } else {
@@ -211,14 +208,14 @@ public class RunApplication {
      * @param map
      */
     private static boolean renameFileInfo(Map<String, String> map) {
-        boolean b=false;
+        boolean b = false;
         if (!(Objects.requireNonNull(map)).isEmpty()) {
             for (Map.Entry<String, String> vo : map.entrySet()) {
                 String key = vo.getKey();
                 String value = vo.getValue();
-                 if(renameFile(key, value)){
-                     b=true;
-                 }
+                if (renameFile(key, value)) {
+                    b = true;
+                }
             }
             map.clear();
         }
@@ -347,7 +344,7 @@ public class RunApplication {
             return false;
         }
         if (newName.endsWith(SERVICE + IMPL + JAVA)) {
-            File newFile = new File(fileName + "\\" + PREFIX + anyCase.get("AaBbCc") + SERVICE + IMPL + JAVA);
+            File newFile = new File(fileName + "\\" + anyCase.get("AaBbCc") + SERVICE + IMPL + JAVA);
             if (checkFileExist(newFile)) {
                 return file.renameTo(newFile);
             }
@@ -555,17 +552,18 @@ public class RunApplication {
      *
      * @return
      */
-    private static boolean renameTitle(String title) {
+    private static boolean renameTitleAndAbc(String title, String aabbcc, String aaBbCc) {
         File webFile = new File(WEB_PATH);
         Map<String, String> map = new LinkedHashMap<>();
         map = traverseFolder(webFile.getAbsolutePath(), map);
         if (!(Objects.requireNonNull(map)).isEmpty()) {
             for (Map.Entry<String, String> vo : map.entrySet()) {
                 String read = FileUtil.read(new File(vo.getValue()), "UTF-8");
-                read = read.replace("TITLE", title);
+                read = read.replace("TITLE", title).replace("aabbcc", aabbcc).replace("aaBbCc", aaBbCc);
+
                 FileUtil.write(new File(vo.getValue()), read, "UTF-8");
-                return true;
             }
+            return true;
         }
         return false;
 

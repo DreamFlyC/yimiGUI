@@ -51,7 +51,7 @@
 
 	<form class="form-horizontal" role="form" method="post" action="<%=basePath%>manage/aabbcc/edit.html"
 		  id="userForm">
-		<input type="hidden" name="id" value="${crmPurchacsePushLog.id}" />
+		<input type="hidden" name="id" value="${aaBbCc.id}" />
 		<div class="list-group-item active glyphicon glyphicon-chevron-up" data-toggle="collapse"
 			 data-parent="#accordion" href="#panelInfo">修改TITLE
 		</div>
