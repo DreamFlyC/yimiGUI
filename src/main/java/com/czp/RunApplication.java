@@ -477,9 +477,6 @@ public class RunApplication {
         for (int i = 0; i < columnNames.size(); i++) {
             String name = StringUtil.firstLower(StringUtil.upperTable(true, columnNames.get(i)));
             StringBuilder tr = new StringBuilder();
-            if ("number".equals(jspTypeList.get(i))) {
-                type = "number";
-            }
             tr.append("\n<tr>\n")
                     .append("<td class=\"info col-md-1 text-right\"><span class=\"red\">*</span>").append(formatColumnComments.get(i)).append("</td>\n")
                     .append("<td class=\"col-md-11\">\n");
@@ -489,6 +486,9 @@ public class RunApplication {
                         .append("placeholder=\"").append("\"请选择").append(formatColumnComments.get(i)).append("\" \n")
                         .append("onclick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})\" onchange=\"\" />\n");
             } else {
+                if ("number".equals(jspTypeList.get(i))) {
+                    type = "number";
+                }
                 tr.append("<input type=\"").append(type).append("\" class=\"form-control\" value=\"\" maxlength=\"50\" datatype=\"*1-50\"\n")
                         .append("name=").append("\"").append(name).append("\" ")
                         .append("placeholder=").append("\"请输入").append(formatColumnComments.get(i)).append("\" ")
@@ -524,9 +524,6 @@ public class RunApplication {
         for (int i = 0; i < columnNames.size(); i++) {
             String name = StringUtil.firstLower(StringUtil.upperTable(true, columnNames.get(i)));
             StringBuilder tr = new StringBuilder();
-            if ("number".equals(jspTypeList.get(i))) {
-                type = "number";
-            }
             tr.append("\n<tr>\n")
                     .append("<td class=\"info col-md-1 text-right\"><span class=\"red\">*</span>").append(formatColumnComments.get(i)).append("</td>\n")
                     .append("<td class=\"col-md-11\">\n");
@@ -537,6 +534,9 @@ public class RunApplication {
                         .append("onclick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})\" \n")
                         .append("value=\"<fmt:formatDate pattern='yyyy-MM-dd HH:mm:ss' value='").append("${").append(aaBbCc).append(".").append(name).append("}' />\">");
             } else {
+                if ("number".equals(jspTypeList.get(i))) {
+                    type = "number";
+                }
                 tr.append("<input type=\"").append(type).append("\" class=\"form-control\" value=\"\" maxlength=\"50\" datatype=\"*1-50\"\n")
                         .append("name=").append("\"").append(name).append("\" ")
                         .append("value=").append("\"${").append(aaBbCc).append(".").append(name).append("}\" ")
