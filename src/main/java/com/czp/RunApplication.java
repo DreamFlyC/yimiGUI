@@ -61,9 +61,9 @@ public class RunApplication {
 
     private static final String JAVA = ".java";
 
-    private static Map<String,String> packageName=new HashMap<>(4);
+    private static Map<String, String> packageName = new HashMap<>(4);
 
-    public static void setPackageName(Map<String,String> packageName) {
+    public static void setPackageName(Map<String, String> packageName) {
         RunApplication.packageName = packageName;
     }
 
@@ -147,7 +147,7 @@ public class RunApplication {
         } else {
             log.info("修改文件失败！");
         }
-        webFileMap = traverseFolder(webFile.getAbsolutePath()+"\\aabbcc", webFileMap);
+        webFileMap = traverseFolder(webFile.getAbsolutePath() + "\\aabbcc", webFileMap);
         boolean b3 = renameFileInfo(webFileMap);
         if (b3) {
             log.info("修改WEB文件名成功！");
@@ -406,7 +406,7 @@ public class RunApplication {
             sb.append("package ").append(packageName.get("service")).append(";");
             sb.append("import ").append(packageName.get("entity")).append(".").append(packageName.get("domain")).append(";\n");
             sb.append("import ").append("com.lw.core.base.service.BaseService").append(";\n");
-        } else if(fileName.endsWith(IMPL+JAVA)){
+        } else if (fileName.endsWith(IMPL + JAVA)) {
             sb.append("package ").append(packageName.get("service")).append(".impl").append(";");
             sb.append("import ").append(packageName.get("entity")).append(".").append(packageName.get("domain")).append(";\n");
             sb.append("import ").append(packageName.get("service")).append(".").append(PREFIX).append(packageName.get("domain")).append(SERVICE).append(";\n");
@@ -468,32 +468,35 @@ public class RunApplication {
         List<String> formatColumnComments = DBUtil.getFormatColumnComments(tableName);
 
         //获取字段类型
-        List<String> columnTypes=DBUtil.getColumnTypes(tableName);
+        List<String> columnTypes = DBUtil.getColumnTypes(tableName);
 
-        String[] primaryKeys = DBUtil.getPrimaryKeys(tableName);
-
-        if (primaryKeys != null && primaryKeys.length > 0) {
-            for (String primaryKey : primaryKeys) {
-                int id = columnNames.indexOf(primaryKey);
-                formatColumnComments.remove(id);
-                columnNames.remove(primaryKey);
-            }
-        }
-
+        removePrimary(tableName, columnNames, formatColumnComments, columnTypes);
+        List<String> jspTypeList = columnTypes2Jsp(columnTypes);
+        String type = "text";
         StringBuilder table = new StringBuilder();
         for (int i = 0; i < columnNames.size(); i++) {
             String name = StringUtil.firstLower(StringUtil.upperTable(true, columnNames.get(i)));
             StringBuilder tr = new StringBuilder();
+            if ("number".equals(jspTypeList.get(i))) {
+                type = "number";
+            }
             tr.append("\n<tr>\n")
                     .append("<td class=\"info col-md-1 text-right\"><span class=\"red\">*</span>").append(formatColumnComments.get(i)).append("</td>\n")
-                    .append("<td class=\"col-md-11\">\n")
-                    .append("<input type=\"text\" class=\"form-control\" value=\"\" maxlength=\"50\" datatype=\"*1-50\"\n")
-                    .append("name=").append("\"").append(name).append("\" ")
-                    .append("placeholder=").append("\"请输入").append(formatColumnComments.get(i)).append("\" ")
-                    .append("nullmsg=").append("\"请输入").append(formatColumnComments.get(i)).append("\" ")
-                    .append("errormsg=").append("\"").append(formatColumnComments.get(i)).append("至少1个字符,最多50个字符！\" />\n")
-                    .append("</td>\n")
-                    .append("</tr>\n");
+                    .append("<td class=\"col-md-11\">\n");
+            if ("date".equals(jspTypeList.get(i))) {
+                tr.append("<input type=\"text\" style=\"text-align: left;\" class=\"form-control\" required\n")
+                        .append("name=").append("\"").append(name).append("\" ")
+                        .append("placeholder=\"").append("\"请选择").append(formatColumnComments.get(i)).append("\" \n")
+                        .append("onclick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})\" onchange=\"\" />\n");
+            } else {
+                tr.append("<input type=\"").append(type).append("\" class=\"form-control\" value=\"\" maxlength=\"50\" datatype=\"*1-50\"\n")
+                        .append("name=").append("\"").append(name).append("\" ")
+                        .append("placeholder=").append("\"请输入").append(formatColumnComments.get(i)).append("\" ")
+                        .append("nullmsg=").append("\"请输入").append(formatColumnComments.get(i)).append("\" ")
+                        .append("errormsg=").append("\"").append(formatColumnComments.get(i)).append("至少1个字符,最多50个字符！\" />\n");
+            }
+            tr.append("</td>\n").append("</tr>\n");
+
             table.append(tr);
         }
         return table.toString();
@@ -509,35 +512,62 @@ public class RunApplication {
         //获取注释
         List<String> formatColumnComments = DBUtil.getFormatColumnComments(tableName);
 
+        //获取字段类型
+        List<String> columnTypes = DBUtil.getColumnTypes(tableName);
+        List<String> jspTypeList = columnTypes2Jsp(columnTypes);
+
+        removePrimary(tableName, columnNames, formatColumnComments, columnTypes);
+
+        String aaBbCc = StringUtil.firstLower(StringUtil.upperTable(true, tableName));
+        String type = "text";
+        StringBuilder table = new StringBuilder();
+        for (int i = 0; i < columnNames.size(); i++) {
+            String name = StringUtil.firstLower(StringUtil.upperTable(true, columnNames.get(i)));
+            StringBuilder tr = new StringBuilder();
+            if ("number".equals(jspTypeList.get(i))) {
+                type = "number";
+            }
+            tr.append("\n<tr>\n")
+                    .append("<td class=\"info col-md-1 text-right\"><span class=\"red\">*</span>").append(formatColumnComments.get(i)).append("</td>\n")
+                    .append("<td class=\"col-md-11\">\n");
+            if ("date".equals(jspTypeList.get(i))) {
+                tr.append("<input type=\"text\" style=\"text-align: left;\" class=\"form-control\" required\n")
+                        .append("name=").append("\"").append(name).append("\" ")
+                        .append("placeholder=\"").append("\"请选择").append(formatColumnComments.get(i)).append("\" \n")
+                        .append("onclick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})\" \n")
+                        .append("value=\"<fmt:formatDate pattern='yyyy-MM-dd HH:mm:ss' value='").append("${").append(aaBbCc).append(".").append(name).append("}' />\">");
+            } else {
+                tr.append("<input type=\"").append(type).append("\" class=\"form-control\" value=\"\" maxlength=\"50\" datatype=\"*1-50\"\n")
+                        .append("name=").append("\"").append(name).append("\" ")
+                        .append("value=").append("\"${").append(aaBbCc).append(".").append(name).append("}\" ")
+                        .append("placeholder=").append("\"请输入").append(formatColumnComments.get(i)).append("\" ")
+                        .append("nullmsg=").append("\"请输入").append(formatColumnComments.get(i)).append("\" ")
+                        .append("errormsg=").append("\"").append(formatColumnComments.get(i)).append("至少1个字符,最多50个字符！\" />\n");
+            }
+            tr.append("</td>\n").append("</tr>\n");
+            table.append(tr);
+        }
+        return table.toString();
+    }
+
+    /**
+     * 移除主键
+     * @param tableName
+     * @param columnNames
+     * @param formatColumnComments
+     * @param columnTypes
+     */
+    private static void removePrimary(String tableName, List<String> columnNames, List<String> formatColumnComments, List<String> columnTypes) {
         String[] primaryKeys = DBUtil.getPrimaryKeys(tableName);
 
         if (primaryKeys != null && primaryKeys.length > 0) {
             for (String primaryKey : primaryKeys) {
                 int id = columnNames.indexOf(primaryKey);
                 formatColumnComments.remove(id);
+                columnTypes.remove(id);
                 columnNames.remove(primaryKey);
             }
         }
-
-        String aaBbCc = StringUtil.firstLower(StringUtil.upperTable(true, tableName));
-        StringBuilder table = new StringBuilder();
-        for (int i = 0; i < columnNames.size(); i++) {
-            String name = StringUtil.firstLower(StringUtil.upperTable(true, columnNames.get(i)));
-            StringBuilder tr = new StringBuilder();
-            tr.append("\n<tr>\n")
-                    .append("<td class=\"info col-md-1 text-right\"><span class=\"red\">*</span>").append(formatColumnComments.get(i)).append("</td>\n")
-                    .append("<td class=\"col-md-11\">\n")
-                    .append("<input type=\"text\" class=\"form-control\" maxlength=\"50\" datatype=\"*1-50\"\n")
-                    .append("name=").append("\"").append(name).append("\" ")
-                    .append("value=").append("\"${").append(aaBbCc).append(".").append(name).append("}\" ")
-                    .append("placeholder=").append("\"请输入").append(formatColumnComments.get(i)).append("\" ")
-                    .append("nullmsg=").append("\"请输入").append(formatColumnComments.get(i)).append("\" ")
-                    .append("errormsg=").append("\"").append(formatColumnComments.get(i)).append("至少1个字符,最多50个字符！\" />\n")
-                    .append("</td>\n")
-                    .append("</tr>\n");
-            table.append(tr);
-        }
-        return table.toString();
     }
 
     /**
@@ -550,21 +580,29 @@ public class RunApplication {
         List<String> columnNames = DBUtil.getColumnNames(tableName);
         //获取注释
         List<String> formatColumnComments = DBUtil.getFormatColumnComments(tableName);
+        //获取字段类型
+        List<String> columnTypes = DBUtil.getColumnTypes(tableName);
+        List<String> jspTypeList = columnTypes2Jsp(columnTypes);
 
         StringBuilder table = new StringBuilder();
         StringBuilder thead = new StringBuilder();
         StringBuilder tbody = new StringBuilder();
+        String type = "text";
         tbody.append("\n<tbody>\n")
                 .append("<c:forEach items=\"${pager.datas}\" var=\"item\">\n")
                 .append("<tr>\n");
         thead.append("\n<thead>\n")
                 .append("<tr>\n");
         for (int i = 0; i < columnNames.size(); i++) {
+
             String name = StringUtil.firstLower(StringUtil.upperTable(true, columnNames.get(i)));
 
             thead.append("<th>").append(formatColumnComments.get(i)).append("</th>\n");
-
-            tbody.append("<td>${item.").append(name).append("}</td>\n");
+            if ("date".equals(jspTypeList.get(i))) {
+                tbody.append("<td><fmt:formatDate pattern=\"yyyy-MM-dd HH:mm:ss\" value=\"${item.").append(name).append("}\"> /></td>\n");
+            } else {
+                tbody.append("<td>${item.").append(name).append("}</td>\n");
+            }
 
         }
         thead.append("<th>操作</th>\n")
@@ -601,7 +639,33 @@ public class RunApplication {
             return true;
         }
         return false;
-
     }
+
+    private static List<String> columnTypes2Jsp(List<String> columnTypes) {
+        List<String> jspTypes = new LinkedList<>();
+        for (String columnType : columnTypes) {
+            if (columnType.contains("INT")) {
+                jspTypes.add("number");
+            } else if (columnType.contains("DATE") || columnType.contains("TIME")) {
+                jspTypes.add("date");
+            } else {
+                jspTypes.add("text");
+            }
+        }
+        return jspTypes;
+    }
+
+    /*public static void main(String[] args) {
+        DBUtil.setUrl("jdbc:mysql://127.0.0.1:3306/traceability?useUnicode=true&amp;characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false");
+        DBUtil.setUsername("root");
+        DBUtil.setPassword("742003942");
+
+        List<String> ad_pic = DBUtil.getColumnTypes("member_door_authority_log");
+        System.out.println(ad_pic.toString());
+        System.out.println("OK!!!");
+
+        List<String> list = columnTypes2Jsp(ad_pic);
+        System.out.println(list.toString());
+    }*/
 }
 
