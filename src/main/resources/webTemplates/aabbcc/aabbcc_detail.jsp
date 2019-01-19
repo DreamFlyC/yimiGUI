@@ -50,7 +50,7 @@
 	<script src="<%=basePath%>resources/My97DatePicker/WdatePicker.js"></script>
 
 	<form class="form-horizontal" role="form" method="post" action="<%=basePath%>manage/aabbcc/edit.html"
-		  id="userForm">
+		  id="userForm" autocomplete="off">
 		<input type="hidden" name="id" value="${aaBbCc.id}" />
 		<div class="list-group-item active glyphicon glyphicon-chevron-up" data-toggle="collapse"
 			 data-parent="#accordion" href="#panelInfo">修改TITLE

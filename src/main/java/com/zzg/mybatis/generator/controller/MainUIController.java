@@ -36,8 +36,8 @@ import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.sql.SQLRecoverableException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class MainUIController extends BaseFXController {
 
@@ -503,4 +503,5 @@ public class MainUIController extends BaseFXController {
         }
 
     }
+
 }

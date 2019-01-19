@@ -22,6 +22,7 @@ public class MainUI extends Application {
 		URL url = Thread.currentThread().getContextClassLoader().getResource("fxml/MainUI.fxml");
 		FXMLLoader fxmlLoader = new FXMLLoader(url);
 		Parent root = fxmlLoader.load();
+		primaryStage.setTitle("一米后台代码生成器V1.3");
 		primaryStage.setResizable(true);
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();

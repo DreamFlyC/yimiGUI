@@ -147,7 +147,7 @@ public class RunApplication {
         } else {
             log.info("修改文件失败！");
         }
-        webFileMap = traverseFolder(webFile.getAbsolutePath(), webFileMap);
+        webFileMap = traverseFolder(webFile.getAbsolutePath()+"\\aabbcc", webFileMap);
         boolean b3 = renameFileInfo(webFileMap);
         if (b3) {
             log.info("修改WEB文件名成功！");
@@ -400,17 +400,17 @@ public class RunApplication {
             sb.append("package ").append(packageName.get("action")).append(";\n\n");
             sb.append("import ").append(packageName.get("entity")).append(".").append(packageName.get("domain")).append(";\n");
             sb.append("import ").append(packageName.get("service")).append(".").append(PREFIX).append(packageName.get("domain")).append(SERVICE).append(";\n");
-            sb.append("import ").append("lw.common.page.Pager").append(";\n");
-            sb.append("import ").append("lw.core.base.action.BaseAction").append(";\n");
+            sb.append("import ").append("com.lw.common.page.Pager").append(";\n");
+            sb.append("import ").append("com.lw.core.base.action.BaseAction").append(";\n");
         } else if (fileName.endsWith(SERVICE + JAVA)) {
-            sb.append("package ").append(packageName.get(1)).append(";");
+            sb.append("package ").append(packageName.get("service")).append(";");
             sb.append("import ").append(packageName.get("entity")).append(".").append(packageName.get("domain")).append(";\n");
-            sb.append("import ").append("lw.core.base.service.BaseService").append(";\n");
+            sb.append("import ").append("com.lw.core.base.service.BaseService").append(";\n");
         } else if(fileName.endsWith(IMPL+JAVA)){
-            sb.append("package ").append(packageName.get(1)).append(".impl").append(";");
+            sb.append("package ").append(packageName.get("service")).append(".impl").append(";");
             sb.append("import ").append(packageName.get("entity")).append(".").append(packageName.get("domain")).append(";\n");
             sb.append("import ").append(packageName.get("service")).append(".").append(PREFIX).append(packageName.get("domain")).append(SERVICE).append(";\n");
-            sb.append("import ").append("lw.core.base.service.impl.BaseServiceImpl").append(";\n");
+            sb.append("import ").append("com.lw.core.base.service.impl.BaseServiceImpl").append(";\n");
         }
         Map<String, String> anyCase = getAnyCase(TABLE_NAME);
         File src = new File(filePath);
@@ -452,6 +452,7 @@ public class RunApplication {
                 FileUtil.write(src, tableInfo, "UTF-8");
             } else {
                 log.error("生成的文件有误，请重新生成！");
+                throw new RuntimeException("生成的文件有误，请重新生成！");
             }
         }
     }
@@ -465,6 +466,9 @@ public class RunApplication {
 
         //获取注释
         List<String> formatColumnComments = DBUtil.getFormatColumnComments(tableName);
+
+        //获取字段类型
+        List<String> columnTypes=DBUtil.getColumnTypes(tableName);
 
         String[] primaryKeys = DBUtil.getPrimaryKeys(tableName);
 
